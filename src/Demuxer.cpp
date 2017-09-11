@@ -4,16 +4,19 @@
  *  Created on: Sep 8, 2017
  *      Author: Nicola Rossi
  */
+#include "Demuxer.h"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "demuxer.h"
+#include "exception_handling.h"
 #include "PACKET.h"
 #include <map>
 
 namespace challenge {
+    const int debug=0;
 
-    void count_freq(std::map<int,int>& map_to_update,int key){
+    void update_frequency(std::map<int,int>& map_to_update,int key){
         auto it=map_to_update.find(key);
          if (it!=map_to_update.end()){
              it->second++;
@@ -23,9 +26,8 @@ namespace challenge {
 
     }
 
-    std::ifstream& operator>>(std::ifstream &input,demuxer &o){
+    std::ifstream& operator>>(std::ifstream &input,Demuxer &o) {
         auto readed=-1L;
-
         PACKET p;
         std::map<int,int> freq_of;
         std::map<int,int> continuity_of;
@@ -35,10 +37,9 @@ namespace challenge {
 
             if (!p.is_valid()) {
                 std::cout<< " The packet at position 0x"<< std::hex << (readed*SIZE_PACKET)<< std::dec <<" doesn't begin with 0x47"<<std::endl;
-                exit(-1);
+                throw TS_format();
             }
 
-            const int debug=0;
             if (debug) {
                 std::cerr<<p;
             }
@@ -51,7 +52,7 @@ namespace challenge {
                         << std::hex << (readed*SIZE_PACKET)
                         << std::dec << " "<< (readed*SIZE_PACKET)<<" doesn't have a AFC value recognised"
                         <<" but "<<afc<<std::endl;
-                exit(-1);
+                throw TS_format();
             }
 
 
@@ -60,33 +61,16 @@ namespace challenge {
 
             if (pid==0) {
                 /* TODO Read PAT information */
-//                PAT pat(p.get_payload(),184);
-//                continue;
-            } else if (pid==1) {
-                /* TODO Read CAT information */
-                continue;
-            } else if (pid==10) {
-                /* TODO Read NIT information */
-                continue;
-            } else if (pid==8191) {
-                /* TODO Null packet handling */
                 continue;
             }
 
-            count_freq(freq_of,pid);
+            update_frequency(freq_of,pid);
 
-            /**/
+            /* Update the frequency for packet with AFC == 1 or 3 and check continuity (used for debug ) */
             if ((afc == 1) || (afc == 3)) {
-                int seq_number = p.get_continuity();
-                int expected_seq;
+                auto seq_number = p.get_continuity();
+                auto expected_seq = seq_number; /* the auto is used to propagate the type */
                 auto it = continuity_of.find(pid);
-
-                if (debug) {
-                    std::cout << " DEBUG " << __LINE__
-                                << " "<<readed  <<") working at position 0x" << std::hex
-                                << (readed * SIZE_PACKET) << std::dec << std::endl;
-
-                }
 
                 if (it == continuity_of.end()) {
                     expected_seq = 0;
@@ -110,13 +94,7 @@ namespace challenge {
                 }
             }
 
-            /*  PES packet_length == 0 handled  */
-            /*
-            if ( p.is_carrying_PES_packet() && p.get_payload_size()==0) {
-                 continue;
-            }*/
-
-            /* output the payload on "out/file_PID" */
+            /* Output the payload on "out/file_PID" */
             std::stringstream ss;
             ss << "out/stream_" << pid;
 
@@ -143,4 +121,4 @@ namespace challenge {
         return input;
     }
 
-} /* namespace fanta */
+} /* namespace challenge */

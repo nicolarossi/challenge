@@ -5,9 +5,10 @@
  *      Author: Nicola Rossi
  */
 
+#include "Packet_Header.h"
+
 #include <iostream>
 #include "common_tool.h"
-#include "PACKET_HEADER.h"
 #include "SYSTEM_HEADER.h"
 #include <sys/types.h>
 #include <signal.h>
@@ -16,7 +17,7 @@
 
 namespace challenge {
     extern long int pack_33_bit(const uint8_t *b,int off);
-    int PACKET_HEADER::fill_pack_header(const uint8_t *payload,int max_size){
+    int Packet_Header::fill_pack_header(const uint8_t *payload,int max_size){
         int off = 0;
         const uint8_t *p;
         p=payload;

@@ -13,16 +13,16 @@
 
 namespace challenge {
 
-    class demuxer {
+    class Demuxer {
 
         public:
             void write_on(PACKET&p,std::ofstream&o);
             void write_audio(PACKET&p);
             void write_video(PACKET&p);
 
-            friend std::ifstream& operator>>(std::ifstream &input,demuxer &o);
+            friend std::ifstream& operator>>(std::ifstream &input,Demuxer &o);
     };
 
-} /* namespace fanta */
+} /* namespace challenge */
 
 #endif /* DEMUXER_H_ */

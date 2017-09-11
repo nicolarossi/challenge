@@ -11,7 +11,7 @@
 
 namespace challenge {
 
-    class PACKET_HEADER {
+    class Packet_Header {
             long int system_clock_reference_base;
             long int system_clock_reference_extension;
             int program_mux_rate;
