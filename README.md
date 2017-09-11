@@ -32,9 +32,9 @@ From Linux command line :
 
 If the ```elephants.ts``` test case is not present it will be downloaded, will requires ```wget``` .
 
-To automate testing during development was used the command line program ```file``` but in the acceptance test it should be used the ```ffplay``` commanda line tool.
+To automate testing during development was used the command line program ```file``` but in the acceptance test it should be used the ```ffplay``` command  line tool.
 
-The ```file``` tool recognises only the audio stream format ( MPEG ADTS, AAC, v4 LC, 48 kHz, stereo) but using ```ffplay``` the video and audio stream are well viewed/played correctly .
+The ```file``` tool recognises only the audio stream format ( MPEG ADTS, AAC, v4 LC, 48 kHz, stereo) but using ```ffplay``` the video and audio stream are viewed/played correctly .
 
 * Output
 
@@ -44,9 +44,9 @@ The TS parser will splice the file ```elephants.ts``` present in the ./ folder ,
 
 # TODO 
 
-* Read the PAT , to avoid writing the stream for PID 0 and 32 , and to recognize the stream associated to the program.
+* Read the PAT , to avoid writing the stream for PID 0 and 32 and to recognize the stream associated to the program.
 
-* 
+
 
 
 
