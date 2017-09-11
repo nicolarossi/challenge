@@ -45,11 +45,15 @@ The TS parser will splice the file ```elephants.ts``` present in the ./ folder ,
 # TODO 
 
 * Read the PAT , to avoid writing the stream for PID 0 and 32 and to recognize the stream associated to the program.
+* Recognise if it is audio or video stream reading the PES packet field ```stream_id```
 
 
+# Performance
 
-
-
+| Step	| Real time  | User time | Sys |
+| Initial time | 2.13 | 1.45 | 0.65 |
+| Packetize the read with 188 sized blocks  | 1.63 | 1.10 | 0.35 |
+| Postpone the write  | 0.21 | 0.15 | 0.06 |
 
 
 
