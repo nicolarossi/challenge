@@ -5,12 +5,13 @@
  *      Author: Nicola Rossi
  */
 
+#include "TS_Packet.h"
+
 #include <string.h>
-#include "PACKET.h"
 #include "PES_packet.h"
 
 namespace challenge {
-    bool PACKET::construct_packet(std::ifstream &input){
+    bool TS_Packet::construct_packet(std::ifstream &input){
 
         auto readed=0L;
         /**/
@@ -27,80 +28,80 @@ namespace challenge {
         return true;
     }
 
-    bool PACKET::is_valid(){
+    bool TS_Packet::is_valid(){
         bool val= buffer[0]==0x47;
         return val;
     }
 
-    int PACKET::get_TEI(){
+    int TS_Packet::get_TEI(){
         int val= (buffer[1] & 0x80 )>>7 ;
         return val;
     }
-    int PACKET::get_PUSI(){
+    int TS_Packet::get_PUSI(){
         int val= (buffer[1] & 0x40 )>>6 ;
         return val;
     }
-    int PACKET::get_Transport_Priority(){
+    int TS_Packet::get_Transport_Priority(){
         int val= (buffer[1] & 0x20 )>>5 ;
         return val;
     }
 
 
-    int PACKET::get_continuity(){
+    int TS_Packet::get_continuity(){
      int val = buffer[3] & 0xf;
      return val  ;
     };
 
-    int PACKET::get_PID(){
+    int TS_Packet::get_PID(){
      int val = (buffer[1]<< 8 | buffer[2] ) & 0x1fff;
      return val ;
     };
 
-    bool PACKET::is_carrying_PES_packet(){
+    bool TS_Packet::is_carrying_PES_packet(){
         return (buffer[1]&0x40 ) ==0x40;
     }
 
-    int PACKET::get_adaptation_field_control(){
+    int TS_Packet::get_adaptation_field_control(){
         int val=(buffer[3] & 0x30 )>>4 ;
         return val;
     }
-    int PACKET::get_adaptation_field_length(){
+    int TS_Packet::get_adaptation_field_length(){
         int val= buffer[4]  ;
         return val;
     }
-    int PACKET::get_random_access_indicator(){
+    int TS_Packet::get_random_access_indicator(){
         int val=(buffer[5] & 0x40) >>6  ;
         return val;
     }
-    int PACKET::get_elementary_stream_priority_indicator(){
+    int TS_Packet::get_elementary_stream_priority_indicator(){
         int val=(buffer[5] & 0x20) >>5  ;
         return val;
     }
-    int PACKET::get_PCR_flag(){
+    int TS_Packet::get_PCR_flag(){
         int val=(buffer[5] & 0x10) >>4  ;
         return val;
     }
-    int PACKET::get_OPCR_flag(){
+    int TS_Packet::get_OPCR_flag(){
         int val= (buffer[5] & 0x8) >>3  ;
         return val;
     }
-    int PACKET::get_splicing_point_flag(){
+    int TS_Packet::get_splicing_point_flag(){
         int val= (buffer[5] & 0x4) >>2  ;
         return val;
     }
 
-    int PACKET::get_transport_private_data_flag() {
+    int TS_Packet::get_transport_private_data_flag() {
         int val= (buffer[5] & 0x2) >>1  ;
         return val;
     }
 
-    int PACKET::get_adaptation_field_extension_flag() {
+    int TS_Packet::get_adaptation_field_extension_flag() {
         int val= (buffer[5] & 0x1)   ;
         return val;
     }
 
     /**/
-    int PACKET::get_transport_private_data_length() {
+    int TS_Packet::get_transport_private_data_length() {
         int offset=get_PCR_flag()*6+get_OPCR_flag()*6+get_splicing_point_flag();
 
         int val= (buffer[5+1+offset] )   ;
@@ -108,7 +109,7 @@ namespace challenge {
     }
 
 
-    int PACKET::get_adaptation_field_extension_length() {
+    int TS_Packet::get_adaptation_field_extension_length() {
         int offset=get_PCR_flag()*6+
                 get_OPCR_flag()*6+
                 get_splicing_point_flag()+
@@ -132,7 +133,7 @@ namespace challenge {
 
 
     /* TODO Rename this method to -> get_all_packet_header_offset */
-    int PACKET::get_adaptation_field_control_offset() {
+    int TS_Packet::get_adaptation_field_control_offset() {
         int afc=this->get_adaptation_field_control();
         if (afc==3) {
             int len_af_payload=buffer[4];
@@ -175,16 +176,16 @@ namespace challenge {
     }
 
 
-    int PACKET::get_header_size(){
+    int TS_Packet::get_header_size(){
         int val=4+this->get_adaptation_field_control_offset();
         return val;
     }
 
-     uint8_t *PACKET::get_payload() {
+     uint8_t *TS_Packet::get_payload() {
         uint8_t *ptr=buffer+this->get_header_size();
         return ptr;
     }
-    int PACKET::get_payload_size(){
+    int TS_Packet::get_payload_size(){
         int afc=this->get_adaptation_field_control();
         if (afc==2) {
             return 0;
@@ -195,7 +196,7 @@ namespace challenge {
     }
 
     /* print the packet in hex */
-    std::ostream& operator<<(std::ostream &output,PACKET &o){
+    std::ostream& operator<<(std::ostream &output,TS_Packet &o){
 
         for (int i=0;i<188; i++) {
             if (i%4==0) {

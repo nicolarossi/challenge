@@ -16,7 +16,8 @@ namespace challenge {
     class PES_packet {
             uint8_t buffer[256];
             const uint8_t *PES_payload;
-            int PES_not_payload_length;
+            int PES_not_payload_length; /* this data member is the sum of byte not contained in the payload */
+
             int packet_start_code_prefix;
             int stream_id;
             int PES_packet_length;
@@ -73,7 +74,10 @@ namespace challenge {
             bool is_valid() {
                 return packet_start_code_prefix==1 && correct_filled;
             }
-            int get_PES_packet_length(){return PES_packet_length;};
+            int get_PES_packet_length() {
+                return PES_packet_length;
+            }
+
     };
 
 } /* namespace challenge */

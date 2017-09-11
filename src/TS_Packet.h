@@ -5,15 +5,15 @@
  *      Author: Nicola Rossi
  */
 
-#ifndef PACKET_H_
-#define PACKET_H_
+#ifndef TS_PACKET_H_
+#define TS_PACKET_H_
 #include <iostream>
 #include <fstream>
 
 namespace challenge {
 #define SIZE_PACKET (188)
 
-    class PACKET {
+    class TS_Packet {
             bool PES_packet_length_zero;
             uint8_t buffer[SIZE_PACKET];
 
@@ -46,10 +46,10 @@ namespace challenge {
             uint8_t *get_payload();
             int get_payload_size();
 
-            friend std::ostream& operator<<(std::ostream &input,PACKET &o);
+            friend std::ostream& operator<<(std::ostream &input,TS_Packet &o);
 
     };
 
 }
 
-#endif /* PACKET_H_ */
+#endif /* TS_PACKET_H_ */
