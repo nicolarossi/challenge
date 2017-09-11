@@ -11,7 +11,8 @@
 #include <sstream>
 #include "exception_handling.h"
 #include <map>
-
+#include <memory>
+#include <vector>
 #include "TS_Packet.h"
 
 namespace challenge {
@@ -35,6 +36,7 @@ namespace challenge {
         auto packet_read=-1L;
         TS_Packet p;
         std::map<int,int> freq_of;
+        std::map<int,vector<uint8_t>> stream_of;
 
         while (p.construct_packet(input)){
             packet_read++;
@@ -73,6 +75,31 @@ namespace challenge {
 
             update_frequency(freq_of,pid);
 
+            /**/
+            auto it_stream=stream_of.find(pid);
+
+            if (it_stream==stream_of.end()){
+                stream_of[pid]=vector<uint8_t>();
+                stream_of[pid].reserve(o.size_stream);
+                it_stream=stream_of.find(pid);
+            }
+            vector<uint8_t> &stream_to_write=it_stream->second;
+
+            /* add the payload */
+            uint8_t *payload=p.get_payload();
+            int payload_size=p.get_payload_size();
+
+            stream_to_write.insert(stream_to_write.end(),payload,payload+payload_size);
+
+        }
+
+        std::cout<< " Writing file "<<endl;
+
+        for (auto it=stream_of.begin();it!=stream_of.end();++it){
+
+            auto pid=it->first;
+            auto v=it->second;
+
             /* Output the payload on "out/file_PID" */
             std::stringstream ss;
             ss << "out/stream_" << pid;
@@ -80,13 +107,11 @@ namespace challenge {
             std::string s=ss.str();
 
             std::fstream fs;
-            fs.open (s, std::fstream::out | std::fstream::app|std::fstream::binary);
-            uint8_t *payload=p.get_payload();
-            int payload_size=p.get_payload_size();
-            fs.write((char*)(payload),payload_size);
+            fs.open (s, std::fstream::out | std::fstream::binary);
+
+            fs.write(reinterpret_cast<char*>(v.data()),v.size());
             fs.close();
         }
-
 
         std::cout << " PID \t Packets written "<< std::endl;
         std::cout << "----------------"<< std::endl;

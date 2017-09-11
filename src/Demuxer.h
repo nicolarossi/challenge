@@ -15,7 +15,9 @@
 namespace challenge {
 
     class Demuxer {
+            size_t size_stream;
         public:
+            Demuxer(size_t size_stream):size_stream(size_stream){};
             friend std::ifstream& operator>>(std::ifstream &input,Demuxer &o);
     };
 

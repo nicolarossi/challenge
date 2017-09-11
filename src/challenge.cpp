@@ -42,7 +42,7 @@ int main(int argc,char**argv) {
 
         ifs.seekg(0,ifs.beg);
 
-        challenge::Demuxer D;
+        challenge::Demuxer D(size_stream);
         ifs >> D;
     } catch (exception & E) {
         cerr << E.what() << endl;
