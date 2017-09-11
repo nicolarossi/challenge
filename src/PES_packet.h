@@ -4,6 +4,7 @@
  *  Created on: Sep 9, 2017
  *      Author: Nicola Rossi
  */
+#include <stdint.h>
 #include "common_tool.h"
 
 #ifndef PES_PACKET_H_

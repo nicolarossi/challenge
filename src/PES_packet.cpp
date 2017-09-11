@@ -7,7 +7,6 @@
 
 //#include <string.h>
 #include <string.h>
-#include "PACKET_HEADER.h"
 #include "PES_packet.h"
 
 namespace challenge {
@@ -160,13 +159,6 @@ namespace challenge {
                     pack_field_length=p[off];
                     off+=1;
                     if (pack_field_length > 0 ) {
-                        /*PACKET_HEADER ph;
-                        int rv=ph.fill_pack_header(p+off, size_payload-off);
-                        if (rv<0) {
-                            return;
-                        } else {
-                            off+=rv;
-                        }*/
                         off+=pack_field_length;
                     }
                 }
