@@ -13,7 +13,7 @@ using namespace std;
 
 namespace challenge {
 
-    class TS_format : public exception {
+    class TS_format_exception : public exception {
       virtual const char* what() const throw()
       {
         return "Error in Transport Stream format\n";

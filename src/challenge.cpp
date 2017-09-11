@@ -42,7 +42,10 @@ int main(int argc,char**argv) {
 
         ifs.seekg(0,ifs.beg);
 
+        //--- the size_stream will be used to reserve the output vector.
         challenge::Demuxer D(size_stream);
+
+        //--- Parse the stream
         ifs >> D;
     } catch (exception & E) {
         cerr << E.what() << endl;

@@ -43,7 +43,7 @@ namespace challenge {
 
             if (!p.is_valid()) {
                 std::cout<< " The packet at position 0x"<< std::hex << (packet_read*SIZE_PACKET)<< std::dec <<" doesn't begin with 0x47"<<std::endl;
-                throw TS_format();
+                throw TS_format_exception();
             }
 
             if (debug) {
@@ -59,9 +59,9 @@ namespace challenge {
             if (afc!=1 && afc!=3) {
                 std::cout<< " The packet at position 0x"
                         << std::hex << (packet_read*SIZE_PACKET)
-                        << std::dec << " "<< (packet_read*SIZE_PACKET)<<" doesn't have a AFC value recognized"
+                        << std::dec << " "<< (packet_read*SIZE_PACKET)<<" doesn't have an AFC value recognized"
                         <<" but "<<afc<<std::endl;
-                throw TS_format();
+                throw TS_format_exception();
             }
 
 
