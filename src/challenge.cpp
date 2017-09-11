@@ -23,11 +23,25 @@ int main(int argc,char**argv) {
     }
 
     try {
-        ifstream ifs(argv[1], std::ifstream::binary);
+        ifstream ifs(argv[1], ios::ate | std::ifstream::binary);
         if (!ifs.is_open()) {
             cerr<< " Error in opening file ["<<argv[1]<<"] "<<endl;
             return -1;
         }
+
+        auto size_stream=ifs.tellg();
+
+        if (size_stream % SIZE_PACKET) {
+            cerr<< " Error in opening file ["<<argv[1]<<"] "<<endl;
+            cerr<< "  it doesn't contain the right size of packets."<<endl;
+            cerr<< size_stream << " is not a multiple of "<<SIZE_PACKET<<endl;
+            return -1;
+        } else {
+            cout<< " The stream contains ["<<size_stream/SIZE_PACKET<<"] packets"<<endl;
+        }
+
+        ifs.seekg(0,ifs.beg);
+
         challenge::Demuxer D;
         ifs >> D;
     } catch (exception & E) {

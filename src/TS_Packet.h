@@ -17,9 +17,6 @@ namespace challenge {
             bool PES_packet_length_zero;
             uint8_t buffer[SIZE_PACKET];
 
-            bool cached_header_size=false;
-            int packet_size=0;
-
         public:
             bool construct_packet(std::ifstream &input);
             bool is_valid();

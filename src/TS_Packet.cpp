@@ -12,19 +12,10 @@
 
 namespace challenge {
     bool TS_Packet::construct_packet(std::ifstream &input){
-        auto readed=0L;
-        /**/
-        while (input.read((char*)(buffer+readed),1)) {
-            readed++;
-            if (readed==SIZE_PACKET) {
-                break;
-            }
+        if (input.read(reinterpret_cast<char*>(buffer),SIZE_PACKET)) {
+            return true;
         }
-
-        /* if the packet is not complete ... */
-        if (readed != SIZE_PACKET ) return false;
-
-        return true;
+        return false;
     }
 
     bool TS_Packet::is_valid(){
@@ -162,7 +153,6 @@ namespace challenge {
 
 
     int TS_Packet::get_header_size() {
-
         int val=4+this->get_below_header_offset();
         return val;
     }
