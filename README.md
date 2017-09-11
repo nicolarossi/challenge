@@ -18,17 +18,11 @@ some introductive link not archived :
 From Linux command line :
 
 
-* to clean the environment
+* to clean the environment ``` make clean ```
 
-``` make clean ```
+* to compile ``` make compile ```
 
-* to compile
-
-``` make compile ```
-
-* to testing 
-
-``` make test ```
+* to testing  ``` make test ```
 
 If the ```elephants.ts``` test case is not present it will be downloaded, will requires ```wget``` .
 
@@ -55,7 +49,6 @@ The TS parser will splice the file ```elephants.ts``` present in the ./ folder ,
 | Initial time | 2.13 | 1.45 | 0.65 |
 | Packetize the read with 188 sized blocks  | 1.63 | 1.10 | 0.35 |
 | Postpone the write  | 0.21 | 0.15 | 0.06 |
-
 
 
  
