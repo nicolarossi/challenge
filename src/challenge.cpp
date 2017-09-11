@@ -5,7 +5,8 @@
 //============================================================================
 
 #include <iostream>
-#include "demuxer.h"
+
+#include "Demuxer.h"
 
 using namespace std;
 
@@ -21,10 +22,18 @@ int main(int argc,char**argv) {
         return print_usage(argv[0]);
     }
 
-    ifstream ifs(argv[1],std::ifstream::binary);
-
-    challenge::demuxer D;
-    ifs >> D;
+    try {
+        ifstream ifs(argv[1], std::ifstream::binary);
+        if (!ifs.is_open()) {
+            cerr<< " Error in opening file ["<<argv[1]<<"] "<<endl;
+            return -1;
+        }
+        challenge::Demuxer D;
+        ifs >> D;
+    } catch (exception & E) {
+        cerr << E.what() << endl;
+        return -1;
+    }
 
 	return 0;
 }
