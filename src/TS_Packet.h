@@ -17,6 +17,9 @@ namespace challenge {
             bool PES_packet_length_zero;
             uint8_t buffer[SIZE_PACKET];
 
+            bool cached_header_size=false;
+            int packet_size=0;
+
         public:
             bool construct_packet(std::ifstream &input);
             bool is_valid();
@@ -38,7 +41,7 @@ namespace challenge {
             int get_adaptation_field_extension_flag() ;
             int get_adaptation_field_extension_length() ;
 
-            int get_all_packet_header_offset();
+            int get_below_header_offset();
             int get_header_size();
 
             int get_continuity();

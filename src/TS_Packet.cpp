@@ -117,10 +117,8 @@ namespace challenge {
         return val;
     }
 
-    /* This method return the offset of payload */
-
-
-    int TS_Packet::get_all_packet_header_offset() {
+    /* This method return the offset of payload due to below packet (eg PES )*/
+    int TS_Packet::get_below_header_offset() {
         int afc=this->get_adaptation_field_control();
         if (afc==3) {
             int len_af_payload=buffer[4];
@@ -165,7 +163,7 @@ namespace challenge {
 
     int TS_Packet::get_header_size() {
 
-        int val=4+this->get_all_packet_header_offset();
+        int val=4+this->get_below_header_offset();
         return val;
     }
 
