@@ -108,7 +108,7 @@ namespace challenge {
         return val;
     }
 
-    /* This method return the offset of payload due to below packet (eg PES )*/
+    /* This method return the offset of payload due to underlying packets (eg PES )*/
     int TS_Packet::get_below_header_offset() {
         int afc=this->get_adaptation_field_control();
         if (afc==3) {

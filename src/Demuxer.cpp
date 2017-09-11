@@ -75,7 +75,9 @@ namespace challenge {
 
             update_frequency(freq_of,pid);
 
-            //
+            // Save the payload in the vector associated to the Program Id
+            // the vector is reserved to the input stream size possible
+            // to increase the output performance
             auto it_stream=stream_of.find(pid);
 
             if (it_stream==stream_of.end()){
@@ -85,7 +87,6 @@ namespace challenge {
             }
             vector<uint8_t> &stream_to_write=it_stream->second;
 
-            /* add the payload */
             uint8_t *payload=p.get_payload();
             int payload_size=p.get_payload_size();
 
@@ -93,6 +94,7 @@ namespace challenge {
 
         }
 
+        //
         std::cout<< " Writing file "<<endl;
 
         for (auto it=stream_of.begin();it!=stream_of.end();++it){
@@ -100,7 +102,7 @@ namespace challenge {
             auto pid=it->first;
             auto v=it->second;
 
-            /* Output the payload on "out/file_PID" */
+            // Output the payload on "out/file_PID"
             std::stringstream ss;
             ss << "out/stream_" << pid;
 
