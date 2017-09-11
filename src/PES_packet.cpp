@@ -10,7 +10,7 @@
 #include "PES_packet.h"
 
 namespace challenge {
-    extern long int pack_33_bit(const uint8_t *b,int off);
+    extern long int pack_33_bit(const uint8_t *b,pack_offset off);
 
     PES_packet::PES_packet(const uint8_t *payload,int size_payload) {
         const uint8_t *p=payload;
@@ -54,16 +54,16 @@ namespace challenge {
                 if (size_payload<(off+5)) {
                     return ;
                 }
-                PTS=pack_33_bit(p+off,4);
+                PTS=pack_33_bit(p+off,pack_offset::full);
                 off+=5;
             }
             if(PTS_DTS_flags == 0b11) {
                 if (size_payload<(off+10)) {
                     return ;
                 }
-                PTS=pack_33_bit(p+off,4);
+                PTS=pack_33_bit(p+off,pack_offset::full);
                 off+=5;
-                DTS=pack_33_bit(p+off,4);
+                DTS=pack_33_bit(p+off,pack_offset::full);
                 off+=5;
             }
             if (ESCR_flag){
@@ -72,7 +72,7 @@ namespace challenge {
                     return ;
                 }
 
-                ESCR_base=pack_33_bit(p+off,2);
+                ESCR_base=pack_33_bit(p+off,pack_offset::half);
 
 
                 ESCR_extension= ( ((( l[4] & 0b00000011)      ) << 7 )|

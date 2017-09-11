@@ -1,7 +1,9 @@
 
 #ifndef __CHALLENGE_COMMON_TOOL_
 #define __CHALLENGE_COMMON_TOOL_
-     int const program_stream_map    = 0b10111100;
+       enum class pack_offset { full = 4,half=2};
+
+       int const program_stream_map    = 0b10111100;
        int const private_stream_1      = 0b10111101;
        int const padding_stream        = 0b10111110;
        int const private_stream_2      = 0b10111111;
