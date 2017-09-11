@@ -11,8 +11,8 @@
 using namespace std;
 
 int print_usage(char *exe){
-    cerr<<" Error in usage:"<<endl;
-    cerr<<"\t"<<exe<<" <input_file>" << endl;
+    cout<<" Error in usage:"<<endl;
+    cout<<"\t"<<exe<<" <input_file>" << endl;
     return (-1);
 }
 
@@ -25,16 +25,16 @@ int main(int argc,char**argv) {
     try {
         ifstream ifs(argv[1], ios::ate | std::ifstream::binary);
         if (!ifs.is_open()) {
-            cerr<< " Error in opening file ["<<argv[1]<<"] "<<endl;
+            cout<< " Error in opening file ["<<argv[1]<<"] "<<endl;
             return -1;
         }
 
         auto size_stream=ifs.tellg();
 
         if (size_stream % SIZE_PACKET) {
-            cerr<< " Error in opening file ["<<argv[1]<<"] "<<endl;
-            cerr<< "  it doesn't contain the right size of packets."<<endl;
-            cerr<< size_stream << " is not a multiple of "<<SIZE_PACKET<<endl;
+            cout<< " Error in opening file ["<<argv[1]<<"] "<<endl;
+            cout<< "  it doesn't contain the right size of packets."<<endl;
+            cout<< size_stream << " is not a multiple of "<<SIZE_PACKET<<endl;
             return -1;
         } else {
             cout<< " The stream contains ["<<size_stream/SIZE_PACKET<<"] packets"<<endl;
@@ -48,7 +48,7 @@ int main(int argc,char**argv) {
         //--- Parse the stream
         ifs >> D;
     } catch (exception & E) {
-        cerr << E.what() << endl;
+        cout << E.what() << endl;
         return -1;
     }
 
