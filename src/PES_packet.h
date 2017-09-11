@@ -14,7 +14,7 @@ namespace challenge {
 
 
     class PES_packet {
-            uint8_t buffer[256];
+            const uint8_t *buffer;
             const uint8_t *PES_payload;
             int PES_not_payload_length; /* this data member is the sum of byte not contained in the payload */
 

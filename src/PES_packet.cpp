@@ -19,7 +19,7 @@ namespace challenge {
         if (size_payload<6) {
             return ;
         }
-        memcpy(buffer,p,size_payload);
+        buffer=p;
         PES_payload=0;
         packet_start_code_prefix=(p[0]<<16) | (p[1]<<8) | p[2];
         stream_id = ( p[3] );
