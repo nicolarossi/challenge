@@ -2,7 +2,7 @@
  * PAT.cpp
  *
  *  Created on: Sep 10, 2017
- *      Author: nop
+ *      Author: Nicola Rossi
  */
 
 #include "PAT.h"

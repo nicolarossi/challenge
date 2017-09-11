@@ -2,7 +2,7 @@
  * PES_packet.h
  *
  *  Created on: Sep 9, 2017
- *      Author: nop
+ *      Author: Nicola Rossi
  */
 #include "common_tool.h"
 

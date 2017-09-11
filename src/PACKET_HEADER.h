@@ -2,7 +2,7 @@
  * PACKET_HEADER.h
  *
  *  Created on: Sep 10, 2017
- *      Author: nop
+ *      Author: Nicola Rossi
  */
 
 #ifndef PACKET_HEADER_H_

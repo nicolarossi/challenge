@@ -2,7 +2,7 @@
  * common_tool.cpp
  *
  *  Created on: Sep 10, 2017
- *      Author: nop
+ *      Author: Nicola Rossi
  */
 #include <iostream>
 

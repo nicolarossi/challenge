@@ -2,7 +2,7 @@
  * SYSTEM_HEADER.cpp
  *
  *  Created on: Sep 10, 2017
- *      Author: nop
+ *      Author: Nicola Rossi
  */
 
 #include "SYSTEM_HEADER.h"

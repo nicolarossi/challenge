@@ -2,7 +2,7 @@
  * PACKET.h
  *
  *  Created on: Sep 8, 2017
- *      Author: nop
+ *      Author: Nicola Rossi
  */
 
 #ifndef PACKET_H_
@@ -18,8 +18,6 @@ namespace challenge {
             uint8_t buffer[SIZE_PACKET];
 
         public:
-//            PACKET();
-//            virtual ~PACKET();
             bool construct_packet(std::ifstream &input);
             bool is_valid();
             int get_TEI();
@@ -50,14 +48,6 @@ namespace challenge {
 
             friend std::ostream& operator<<(std::ostream &input,PACKET &o);
 
-            /*
-            bool is_PES_packet_length_zero() const {
-                return PES_packet_length_zero;
-            }
-
-            void set_PES_packet_length_zero(bool pesPacketEmpty) {
-                PES_packet_length_zero = pesPacketEmpty;
-            }*/
     };
 
 }

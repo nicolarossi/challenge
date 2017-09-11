@@ -2,7 +2,7 @@
  * SYSTEM_HEADER.h
  *
  *  Created on: Sep 10, 2017
- *      Author: nop
+ *      Author: Nicola Rossi
  */
 
 #ifndef SYSTEM_HEADER_H_

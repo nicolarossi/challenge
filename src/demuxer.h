@@ -2,7 +2,7 @@
  * demuxer.h
  *
  *  Created on: Sep 8, 2017
- *      Author: nop
+ *      Author: Nicola Rossi
  */
 
 #ifndef DEMUXER_H_

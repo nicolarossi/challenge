@@ -2,7 +2,7 @@
  * PACKET.cpp
  *
  *  Created on: Sep 8, 2017
- *      Author: nop
+ *      Author: Nicola Rossi
  */
 
 #include <string.h>

@@ -2,7 +2,7 @@
  * PAT.h
  *
  *  Created on: Sep 10, 2017
- *      Author: nop
+ *      Author: Nicola Rossi
  */
 
 #ifndef PAT_H_
