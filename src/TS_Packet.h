@@ -38,7 +38,7 @@ namespace challenge {
             int get_adaptation_field_extension_flag() ;
             int get_adaptation_field_extension_length() ;
 
-            int get_adaptation_field_control_offset();
+            int get_all_packet_header_offset();
             int get_header_size();
 
             int get_continuity();

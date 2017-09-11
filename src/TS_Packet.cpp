@@ -12,7 +12,6 @@
 
 namespace challenge {
     bool TS_Packet::construct_packet(std::ifstream &input){
-
         auto readed=0L;
         /**/
         while (input.read((char*)(buffer+readed),1)) {
@@ -22,7 +21,7 @@ namespace challenge {
             }
         }
 
-        /* if the packet is incomplete ... */
+        /* if the packet is not complete ... */
         if (readed != SIZE_PACKET ) return false;
 
         return true;
@@ -117,23 +116,11 @@ namespace challenge {
         int val= buffer[5+1+offset];
         return val;
     }
-    /*
-    int PACKET::get_ltw_flag() {
-        return buffer[4]  ;
-    }
-    int PACKET::get_piecewise_rate_flag() {
-        return buffer[4]  ;
-    }
 
-    int PACKET::get_seamless_splice_flag() {
-        return buffer[4]  ;
-    }
-    */
+    /* This method return the offset of payload */
 
 
-
-    /* TODO Rename this method to -> get_all_packet_header_offset */
-    int TS_Packet::get_adaptation_field_control_offset() {
+    int TS_Packet::get_all_packet_header_offset() {
         int afc=this->get_adaptation_field_control();
         if (afc==3) {
             int len_af_payload=buffer[4];
@@ -176,8 +163,9 @@ namespace challenge {
     }
 
 
-    int TS_Packet::get_header_size(){
-        int val=4+this->get_adaptation_field_control_offset();
+    int TS_Packet::get_header_size() {
+
+        int val=4+this->get_all_packet_header_offset();
         return val;
     }
 

@@ -12,7 +12,6 @@
 namespace challenge {
     extern long int pack_33_bit(const uint8_t *b,int off);
 
-
     PES_packet::PES_packet(const uint8_t *payload,int size_payload) {
         const uint8_t *p=payload;
         correct_filled=false;
@@ -21,7 +20,7 @@ namespace challenge {
             return ;
         }
         memcpy(buffer,p,size_payload);
-        PES_payload=0; /**/
+        PES_payload=0;
         packet_start_code_prefix=(p[0]<<16) | (p[1]<<8) | p[2];
         stream_id = ( p[3] );
         PES_packet_length = (p[4]<<8) | (p[5]);
@@ -194,11 +193,12 @@ namespace challenge {
                         return ;
                     }
                 }
-            }/* controllare qui off */
+            }
+
+            /**/
             int stuffing_len= off-base_of_header-PES_header_data_length;
             if (stuffing_len>0){
                 off+=stuffing_len ;
-                /* TODO It was enough use the last PES_packet_length byte */
                 if (size_payload<(off)) {
                     return ;
                 }
@@ -220,6 +220,7 @@ namespace challenge {
         } else if ( stream_id == padding_stream) {
             /* PAYLOAD is empty */
             PES_payload=0;
+            PES_not_payload_length=size_payload;
         }
 
         PES_not_payload_length=p+off-payload;
