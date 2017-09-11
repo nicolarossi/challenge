@@ -195,7 +195,7 @@ namespace challenge {
                 }
             }
 
-            /**/
+            //
             int stuffing_len= off-base_of_header-PES_header_data_length;
             if (stuffing_len>0){
                 off+=stuffing_len ;
@@ -211,7 +211,7 @@ namespace challenge {
                 || stream_id == program_stream_directory
                 || stream_id == DSMCC_stream
                 || stream_id == ITU_type_E ) {
-            /**/
+            //
             PES_payload=p+off;
             if (size_payload<(off)) {
                 return ;
@@ -228,4 +228,4 @@ namespace challenge {
         return ;
     }
 
-} /* namespace challenge */
+} 

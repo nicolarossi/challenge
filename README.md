@@ -30,10 +30,9 @@ To automate testing during development was used the command line program ```file
 
 The ```file``` tool recognises only the audio stream format ( MPEG ADTS, AAC, v4 LC, 48 kHz, stereo) but using ```ffplay``` the video and audio stream are viewed/played correctly .
 
-* Output
+# Output
 
 The TS parser will splice the file ```elephants.ts``` present in the ./ folder , and it is going to create separate file for every stream named ```./out/stream_PID ``` where PID is the Program ID in the TS packet .
-
 
 
 # TODO 

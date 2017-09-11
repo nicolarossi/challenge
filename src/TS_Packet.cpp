@@ -90,7 +90,7 @@ namespace challenge {
         return val;
     }
 
-    /**/
+    //
     int TS_Packet::get_transport_private_data_length() {
         int offset=get_PCR_flag()*6+get_OPCR_flag()*6+get_splicing_point_flag();
 

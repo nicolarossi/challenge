@@ -21,6 +21,6 @@ namespace challenge {
             friend std::ifstream& operator>>(std::ifstream &input,Demuxer &o);
     };
 
-} /* namespace challenge */
+} 
 
 #endif /* DEMUXER_H_ */

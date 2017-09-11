@@ -20,6 +20,6 @@ namespace challenge {
       }
     } ;
 
-} /* namespace challenge */
+} 
 
 #endif /* EXCEPTION_HANDLING_H_ */

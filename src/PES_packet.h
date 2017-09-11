@@ -54,7 +54,6 @@ namespace challenge {
             bool PSTD_buffer_flag=false;
             bool PES_extension_flag_2=false;
 
-
             int pack_field_length;
 
             int program_packet_sequence_counter;
@@ -80,6 +79,6 @@ namespace challenge {
 
     };
 
-} /* namespace challenge */
+} 
 
-#endif /* PES_PACKET_H_ */
+#endif

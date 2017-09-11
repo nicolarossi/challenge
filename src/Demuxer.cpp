@@ -53,7 +53,7 @@ namespace challenge {
                 std::cerr<<p;
             }
 
-            /**/
+            //
             int afc=p.get_adaptation_field_control();
 
             if (afc!=1 && afc!=3) {
@@ -65,7 +65,7 @@ namespace challenge {
             }
 
 
-            /**/
+            //
             int pid=p.get_PID();
 
             if (pid==0) {
@@ -75,7 +75,7 @@ namespace challenge {
 
             update_frequency(freq_of,pid);
 
-            /**/
+            //
             auto it_stream=stream_of.find(pid);
 
             if (it_stream==stream_of.end()){
@@ -125,4 +125,4 @@ namespace challenge {
         return input;
     }
 
-} /* namespace challenge */
+} 
