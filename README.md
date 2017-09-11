@@ -51,6 +51,7 @@ The TS parser will splice the file ```elephants.ts``` present in the ./ folder ,
 # Performance
 
 | Step	| Real time  | User time | Sys |
+| ---- | ---- | ---- | ---- |
 | Initial time | 2.13 | 1.45 | 0.65 |
 | Packetize the read with 188 sized blocks  | 1.63 | 1.10 | 0.35 |
 | Postpone the write  | 0.21 | 0.15 | 0.06 |
