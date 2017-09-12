@@ -21,7 +21,7 @@ namespace challenge {
             size_t packet_read;
             std::vector<uint8_t> transport_stream;
             std::map<int, int> freq_of;
-            std::map<int, std::shared_ptr<std::fstream>> stream_of;
+            std::map<int, std::fstream> stream_of;
 
         public:
             Demuxer(size_t size_stream) :

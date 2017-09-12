@@ -72,30 +72,26 @@ namespace challenge {
             update_frequency(freq_of, pid);
 
             // Save the payload in the fstream associated to the Program Id
-            std::shared_ptr<std::fstream> stream_to_write = stream_of[pid];
+            auto &stream_to_write = (stream_of[pid]);
 
             // if the fstream is not created we will create it in the "out/" directory
-            if (stream_to_write == nullptr) {
+            if (!stream_to_write.is_open() ) {
                 std::stringstream ss;
                 ss << "out/stream_" << pid;
                 std::string stream_path = ss.str();
 
-                stream_to_write = std::shared_ptr<std::fstream>(
-                        new std::fstream());
-
-                stream_to_write->open(stream_path,
+                stream_to_write.open(stream_path,
                         std::fstream::out | std::fstream::binary);
-                if (!stream_to_write->is_open()) {
+                if (!stream_to_write.is_open()) {
                     throw FS_open_file_exception();
                 }
 
-                stream_of[pid] = stream_to_write;
             }
 
             uint8_t *payload = p.get_payload();
             int payload_size = p.get_payload_size();
 
-            stream_to_write->write(reinterpret_cast<char*>(payload),
+            stream_to_write.write(reinterpret_cast<char*>(payload),
                     payload_size);
 
         }
@@ -105,7 +101,7 @@ namespace challenge {
         std::cout << " Writing file " << std::endl;
 
         for (auto it = stream_of.begin(); it != stream_of.end(); ++it) {
-            it->second.get()->close();
+            it->second.close();
         }
 
         std::cout << " PID \t Packets written " << std::endl;
