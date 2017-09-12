@@ -22,7 +22,7 @@ namespace challenge {
         auto it=map_to_update.find(key);
         auto pid=key;
          if (it!=map_to_update.end()){
-             it->second++;
+             ++it->second;
          } else {
              if (debug) {
                  std::cerr << " DEBUG " << __LINE__
