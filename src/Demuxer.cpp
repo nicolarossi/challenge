@@ -72,13 +72,12 @@ namespace challenge {
             // Save the payload in the fstream associated to the Program Id
             auto it=stream_of.find(pid);
 
+            // if the fstream isn't present we will create it in the out/ directory
             if (it==stream_of.end()) {
-                // if not present we create the fstream
                 std::stringstream ss;
                 ss << "out/stream_" << pid;
 
-                std::string s=ss.str();
-
+                std::string stream_path=ss.str();
                 stream_of.insert(stream_of.begin(),
                         std::pair<int, std::shared_ptr<std::fstream>>(
                                 pid,
@@ -86,7 +85,10 @@ namespace challenge {
                                         new std::fstream())));
                 it=stream_of.find(pid);
 
-                it->second.get()->open(s, std::fstream::out | std::fstream::binary);
+                it->second.get()->open(stream_path, std::fstream::out | std::fstream::binary);
+                if(!it->second.get()->is_open()) {
+                    throw FS_open_file_exception();
+                }
             }
 
             auto &stream_to_write=*it->second.get();
@@ -107,15 +109,13 @@ namespace challenge {
         }
 
         std::cout << " PID \t Packets written "<< std::endl;
-        std::cout << "----------------"<< std::endl;
+        std::cout << "--------------------------------"<< std::endl;
 
         for (auto it=freq_of.begin();it!=freq_of.end();++it ){
             std::cout <<" " << it->first << "\t"<<it->second << std::endl;
         }
         std::cout << " "<<std::endl;
 
-        std::cout << " Packets read \t\t"<<packet_read << std::endl;
-        std::cout << " "<<std::endl;
         return ;
     }
 
