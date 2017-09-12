@@ -10,7 +10,7 @@
 #include "PES_packet.h"
 
 namespace challenge {
-    extern long int pack_33_bit(const uint8_t *b,pack_offset off);
+    extern long int pack_33_bit(const uint8_t *b,challenge::pack_offset off);
 
     PES_packet::PES_packet(const uint8_t *payload,int size_payload) {
         const uint8_t *p=payload;

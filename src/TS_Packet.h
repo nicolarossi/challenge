@@ -34,10 +34,10 @@ namespace challenge {
             int get_PCR_flag();
             int get_OPCR_flag();
             int get_splicing_point_flag();
-            int get_transport_private_data_flag() ;
-            int get_transport_private_data_length() ;
-            int get_adaptation_field_extension_flag() ;
-            int get_adaptation_field_extension_length() ;
+            int get_transport_private_data_flag();
+            int get_transport_private_data_length();
+            int get_adaptation_field_extension_flag();
+            int get_adaptation_field_extension_length();
 
             int get_below_header_offset();
             int get_header_size();

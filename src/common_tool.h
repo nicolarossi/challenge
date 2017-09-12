@@ -1,6 +1,8 @@
 
 #ifndef __CHALLENGE_COMMON_TOOL_
 #define __CHALLENGE_COMMON_TOOL_
+
+namespace challenge {
        enum class pack_offset { full = 4,half=2};
 
        int const program_stream_map    = 0b10111100;
@@ -20,4 +22,5 @@
        int const slow_reverse  = 0b100;
 
        int const system_header_start_code = 0x000001BB;
+}
 #endif
