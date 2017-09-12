@@ -12,7 +12,6 @@
 
 namespace challenge {
 
-
     class PES_packet {
             const uint8_t *buffer;
             const uint8_t *PES_payload;
@@ -38,7 +37,7 @@ namespace challenge {
             int PES_header_data_length;
             long int PTS;
             long int DTS;
-            long int ESCR_base,ESCR_extension;
+            long int ESCR_base, ESCR_extension;
             int ES_rate;
             int trick_mode_control;
             int field_id;
@@ -47,12 +46,12 @@ namespace challenge {
             int rep_cntrl;
             int additional_copy_info;
             int previous_PES_packet_CRC;
-            bool PES_private_data_flag=false;
+            bool PES_private_data_flag = false;
             uint8_t PES_private_data[16];
-            bool pack_header_field_flag=false;
-            bool program_packet_sequence_counter_flag=false;
-            bool PSTD_buffer_flag=false;
-            bool PES_extension_flag_2=false;
+            bool pack_header_field_flag = false;
+            bool program_packet_sequence_counter_flag = false;
+            bool PSTD_buffer_flag = false;
+            bool PES_extension_flag_2 = false;
 
             int pack_field_length;
 
@@ -64,13 +63,13 @@ namespace challenge {
             int PES_extension_field_length;
 
         public:
-            PES_packet(const uint8_t *payload,int size_payload);
+            PES_packet(const uint8_t *payload, int size_payload);
 
-            int get_PES_not_payload_length(){
+            int get_PES_not_payload_length() {
                 return PES_not_payload_length;
             }
             bool is_valid() {
-                return packet_start_code_prefix==1;
+                return packet_start_code_prefix == 1;
             }
             int get_PES_packet_length() {
                 return PES_packet_length;
@@ -78,6 +77,6 @@ namespace challenge {
 
     };
 
-} 
+}
 
 #endif

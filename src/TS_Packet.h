@@ -12,7 +12,7 @@
 #include <vector>
 
 namespace challenge {
-    size_t const SIZE_PACKET=188;
+    size_t const SIZE_PACKET = 188;
 
     class TS_Packet {
             bool PES_packet_length_zero;
@@ -47,7 +47,7 @@ namespace challenge {
             uint8_t *get_payload();
             size_t get_payload_size();
 
-            friend std::ostream& operator<<(std::ostream &input,TS_Packet &o);
+            friend std::ostream& operator<<(std::ostream &input, TS_Packet &o);
 
     };
 
