@@ -84,6 +84,7 @@ namespace challenge {
                 if(!stream_to_write->is_open()) {
                     throw FS_open_file_exception();
                 }
+
                 stream_of[pid]=stream_to_write;
             }
 
