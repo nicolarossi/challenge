@@ -70,33 +70,27 @@ namespace challenge {
             update_frequency(freq_of,pid);
 
             // Save the payload in the fstream associated to the Program Id
-            auto it=stream_of.find(pid);
+            std::shared_ptr<std::fstream> stream_to_write=stream_of[pid];
 
-            // if the fstream isn't present we will create it in the out/ directory
-            if (it==stream_of.end()) {
+            // if the fstream is not created we will create it in the "out/" directory
+            if (stream_to_write==nullptr) {
                 std::stringstream ss;
                 ss << "out/stream_" << pid;
-
                 std::string stream_path=ss.str();
-                stream_of.insert(stream_of.begin(),
-                        std::pair<int, std::shared_ptr<std::fstream>>(
-                                pid,
-                                    std::shared_ptr<std::fstream>(
-                                        new std::fstream())));
-                it=stream_of.find(pid);
 
-                it->second.get()->open(stream_path, std::fstream::out | std::fstream::binary);
-                if(!it->second.get()->is_open()) {
+                stream_to_write=std::shared_ptr<std::fstream>(new std::fstream());
+
+                stream_to_write->open(stream_path, std::fstream::out | std::fstream::binary);
+                if(!stream_to_write->is_open()) {
                     throw FS_open_file_exception();
                 }
+                stream_of[pid]=stream_to_write;
             }
-
-            auto &stream_to_write=*it->second.get();
 
             uint8_t *payload=p.get_payload();
             int payload_size=p.get_payload_size();
 
-            stream_to_write.write(reinterpret_cast<char*>(payload),payload_size);
+            stream_to_write->write(reinterpret_cast<char*>(payload),payload_size);
 
         }
         return ;
