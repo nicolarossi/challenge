@@ -5,7 +5,6 @@
  *      Author: Nicola Rossi
  */
 #include <iostream>
-
 #include "common_tool.h"
 
 namespace challenge {

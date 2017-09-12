@@ -7,10 +7,11 @@
 
 #ifndef DEMUXER_H_
 #define DEMUXER_H_
-
+#include <iostream>
 #include <fstream>
 #include <vector>
 #include <map>
+#include <memory>
 #include "TS_Packet.h"
 
 namespace challenge {
@@ -18,11 +19,15 @@ namespace challenge {
     class Demuxer {
             size_t size_stream;
             size_t packet_read;
+            size_t packet_readable;
+            std::vector<uint8_t> transport_stream;
             std::map<int,int> freq_of;
-            std::map<int,std::vector<uint8_t>> stream_of;
+            std::map<int,std::shared_ptr<std::fstream>> stream_of;
 
         public:
-            Demuxer(size_t size_stream):size_stream(size_stream){};
+            Demuxer(size_t size_stream) :
+                    size_stream(size_stream), packet_read(0), packet_readable(size_stream/SIZE_PACKET), transport_stream(size_stream) {
+            };
             void extract_stream(std::ifstream &input);
             void dump_extracted_stream();
 

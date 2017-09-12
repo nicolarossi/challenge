@@ -31,13 +31,13 @@ int main(int argc,char**argv) {
 
         auto size_stream=ifs.tellg();
 
-        if (size_stream % SIZE_PACKET) {
+        if (size_stream % challenge::SIZE_PACKET) {
             cout<< " Error in opening file ["<<argv[1]<<"] "<<endl;
             cout<< "  it doesn't contain the right size of packets."<<endl;
-            cout<< size_stream << " is not a multiple of "<<SIZE_PACKET<<endl;
+            cout<< size_stream << " is not a multiple of "<<challenge::SIZE_PACKET<<endl;
             return -1;
         } else {
-            cout<< " The stream contains ["<<size_stream/SIZE_PACKET<<"] packets"<<endl;
+            cout<< " The stream contains ["<<size_stream/challenge::SIZE_PACKET<<"] packets"<<endl;
         }
 
         ifs.seekg(0,ifs.beg);

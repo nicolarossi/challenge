@@ -4,16 +4,15 @@
  *  Created on: Sep 8, 2017
  *      Author: Nicola Rossi
  */
-#include "Demuxer.h"
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "exception_handling.h"
 #include <map>
 #include <memory>
 #include <vector>
+#include "exception_handling.h"
 #include "TS_Packet.h"
+#include "Demuxer.h"
 
 namespace challenge {
     const int debug=0;
@@ -33,11 +32,15 @@ namespace challenge {
     }
 
     void Demuxer::extract_stream(std::ifstream &input) {
-        packet_read=-1L;
-        TS_Packet p;
+        // We make a single read in memory, the transport_stream is reserved in the Demuxer constructor .
+        input.read(reinterpret_cast<char*>(transport_stream.data()),size_stream);
 
-        while (p.construct_packet(input)){
-            packet_read++;
+        packet_read=0;
+
+        TS_Packet p;
+        for (auto it_stream=transport_stream.begin() ; it_stream!=transport_stream.end(); ++packet_read) {
+
+            p.construct_packet(it_stream);
 
             if (!p.is_valid()) {
                 throw TS_format_sync_byte_exception(packet_read*SIZE_PACKET);
@@ -57,7 +60,6 @@ namespace challenge {
             }
 
 
-            //
             int pid=p.get_PID();
 
             if (pid==0) {
@@ -67,25 +69,32 @@ namespace challenge {
 
             update_frequency(freq_of,pid);
 
+            // Save the payload in the fstream associated to the Program Id
+            auto it=stream_of.find(pid);
 
-            // Save the payload in the vector associated to the Program Id
-            // the vector is reserved to the input stream size possible
-            // to increase the output performance
-            auto &stream_to_write=stream_of[pid];
+            if (it==stream_of.end()) {
+                // if not present we create the fstream
+                std::stringstream ss;
+                ss << "out/stream_" << pid;
 
-            // When the vector<> is allocated we reserve the space for the maximum number of byte
-            // to write for that stream.
-            // So the insert() will not copy element to increase the size.
-            // Cons: We consume more memory
-            if (stream_to_write.capacity()<this->size_stream){
-                stream_to_write.reserve(this->size_stream);
+                std::string s=ss.str();
+
+                stream_of.insert(stream_of.begin(),
+                        std::pair<int, std::shared_ptr<std::fstream>>(
+                                pid,
+                                    std::shared_ptr<std::fstream>(
+                                        new std::fstream())));
+                it=stream_of.find(pid);
+
+                it->second.get()->open(s, std::fstream::out | std::fstream::binary);
             }
+
+            auto &stream_to_write=*it->second.get();
 
             uint8_t *payload=p.get_payload();
             int payload_size=p.get_payload_size();
 
-            // We make a memory-to-memory copy to make a single  write on file system, no more using append.
-            stream_to_write.insert(stream_to_write.end(),payload,payload+payload_size);
+            stream_to_write.write(reinterpret_cast<char*>(payload),payload_size);
 
         }
         return ;
@@ -93,22 +102,8 @@ namespace challenge {
     void Demuxer::dump_extracted_stream() {
         std::cout<< " Writing file "<<std::endl;
 
-        for (auto it=stream_of.begin();it!=stream_of.end();++it){
-
-            auto pid=it->first;
-            auto v=it->second;
-
-            // Dump the payload on "out/file_PID"
-            std::stringstream ss;
-            ss << "out/stream_" << pid;
-
-            std::string s=ss.str();
-
-            std::fstream fs;
-            fs.open (s, std::fstream::out | std::fstream::binary);
-
-            fs.write(reinterpret_cast<char*>(v.data()),v.size());
-            fs.close();
+        for (auto it=stream_of.begin(); it!=stream_of.end(); ++it) {
+            it->second.get()->close();
         }
 
         std::cout << " PID \t Packets written "<< std::endl;

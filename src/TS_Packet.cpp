@@ -11,11 +11,9 @@
 #include "TS_Packet.h"
 
 namespace challenge {
-    bool TS_Packet::construct_packet(std::ifstream &input) {
-        if (input.read(reinterpret_cast<char*>(buffer),SIZE_PACKET)) {
-            return true;
-        }
-        return false;
+    void TS_Packet::construct_packet(std::vector<uint8_t>::iterator &input) {
+        buffer=&(input[0]);
+        input+=SIZE_PACKET;
     }
 
     bool TS_Packet::is_valid() {
@@ -170,7 +168,7 @@ namespace challenge {
         uint8_t *ptr=buffer+this->get_header_size();
         return ptr;
     }
-    int TS_Packet::get_payload_size() {
+    size_t TS_Packet::get_payload_size() {
         int afc=this->get_adaptation_field_control();
         if (afc==2) {
             return 0;
@@ -183,7 +181,7 @@ namespace challenge {
     /* print the packet in hex */
     std::ostream& operator<<(std::ostream &output,TS_Packet &o){
 
-        for (int i=0;i<SIZE_PACKET; i++) {
+        for (size_t i=0;i<SIZE_PACKET; i++) {
             if (i%4==0) {
                 output<< "    ";
             }

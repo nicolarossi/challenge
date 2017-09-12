@@ -5,7 +5,6 @@
  *      Author: Nicola Rossi
  */
 
-//#include <string.h>
 #include <string.h>
 #include "exception_handling.h"
 #include "PES_packet.h"

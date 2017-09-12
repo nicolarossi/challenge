@@ -9,16 +9,17 @@
 #define TS_PACKET_H_
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 namespace challenge {
-#define SIZE_PACKET (188)
+    size_t const SIZE_PACKET=188;
 
     class TS_Packet {
             bool PES_packet_length_zero;
-            uint8_t buffer[SIZE_PACKET];
+            uint8_t *buffer;
 
         public:
-            bool construct_packet(std::ifstream &input);
+            void construct_packet(std::vector<uint8_t>::iterator &input);
             bool is_valid();
             int get_TEI();
             int get_PUSI();
@@ -44,7 +45,7 @@ namespace challenge {
             int get_continuity();
             int get_PID();
             uint8_t *get_payload();
-            int get_payload_size();
+            size_t get_payload_size();
 
             friend std::ostream& operator<<(std::ostream &input,TS_Packet &o);
 
