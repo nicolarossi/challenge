@@ -98,7 +98,7 @@ namespace challenge {
         return;
     }
     void Demuxer::dump_extracted_stream() {
-        std::cout << " Writing file " << std::endl;
+        std::cout << " Dump data " << std::endl;
 
         for (auto it = stream_of.begin(); it != stream_of.end(); ++it) {
             it->second.close();
