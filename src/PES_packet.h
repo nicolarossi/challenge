@@ -63,7 +63,6 @@ namespace challenge {
             int PSTD_buffer_size;
             int PES_extension_field_length;
 
-            bool correct_filled;
         public:
             PES_packet(const uint8_t *payload,int size_payload);
 
@@ -71,7 +70,7 @@ namespace challenge {
                 return PES_not_payload_length;
             }
             bool is_valid() {
-                return packet_start_code_prefix==1 && correct_filled;
+                return packet_start_code_prefix==1;
             }
             int get_PES_packet_length() {
                 return PES_packet_length;

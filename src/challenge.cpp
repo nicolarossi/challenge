@@ -5,7 +5,7 @@
 //============================================================================
 
 #include <iostream>
-
+#include "exception_handling.h"
 #include "Demuxer.h"
 
 using namespace std;
@@ -23,7 +23,7 @@ int main(int argc,char**argv) {
     }
 
     try {
-        ifstream ifs(argv[1], ios::ate | std::ifstream::binary);
+        ifstream ifs(argv[1], ios::ate | ifstream::binary);
         if (!ifs.is_open()) {
             cout<< " Error in opening file ["<<argv[1]<<"] "<<endl;
             return -1;
@@ -43,12 +43,19 @@ int main(int argc,char**argv) {
         ifs.seekg(0,ifs.beg);
 
         //--- the size_stream will be used to reserve() the output vector.
-        challenge::Demuxer D(size_stream);
+        challenge::Demuxer demuxer(size_stream);
 
-        //--- Parse the stream
-        ifs >> D;
-    } catch (exception & E) {
-        cout << E.what() << endl;
+        demuxer.extract_stream(ifs);
+
+        demuxer.dump_extracted_stream();
+
+    } catch (challenge::TS_format_exception & e) {
+        cout << e.what() << endl;
+        cout << " on byte at position 0x" << hex <<e.get_position()
+                                  << dec << " "<< e.get_position() <<endl;
+        return -1;
+    } catch (exception & e) {
+        cout << e.what() << endl;
         return -1;
     }
 

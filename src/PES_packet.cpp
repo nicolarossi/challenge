@@ -7,6 +7,7 @@
 
 //#include <string.h>
 #include <string.h>
+#include "exception_handling.h"
 #include "PES_packet.h"
 
 namespace challenge {
@@ -14,7 +15,6 @@ namespace challenge {
 
     PES_packet::PES_packet(const uint8_t *payload,int size_payload) {
         const uint8_t *p=payload;
-        correct_filled=false;
 
         if (size_payload<6) {
             return ;
@@ -34,7 +34,7 @@ namespace challenge {
                 && stream_id != DSMCC_stream
                 && stream_id != ITU_type_E) {
             if (size_payload<9) {
-                return ;
+                throw PES_format_exception() ;
             }
             PES_scrambling_control  = ( p[6] & 0b00110000 ) >> 4;
             PES_priority            = ( p[6] & 0b00001000 ) >> 3;
@@ -52,14 +52,14 @@ namespace challenge {
             int base_of_header=off=9;
             if (PTS_DTS_flags == 0b10 ) {
                 if (size_payload<(off+5)) {
-                    return ;
+                    throw PES_format_exception() ;
                 }
                 PTS=pack_33_bit(p+off,pack_offset::full);
                 off+=5;
             }
             if(PTS_DTS_flags == 0b11) {
                 if (size_payload<(off+10)) {
-                    return ;
+                    throw PES_format_exception() ;
                 }
                 PTS=pack_33_bit(p+off,pack_offset::full);
                 off+=5;
@@ -69,7 +69,7 @@ namespace challenge {
             if (ESCR_flag){
                 const uint8_t *l=p+off;
                 if (size_payload<(off+6)) {
-                    return ;
+                    throw PES_format_exception() ;
                 }
 
                 ESCR_base=pack_33_bit(p+off,pack_offset::half);
@@ -82,7 +82,7 @@ namespace challenge {
             }
             if (ES_rate_flag) {
                 if (size_payload<(off+3)) {
-                    return ;
+                    throw PES_format_exception() ;
                 }
                 const uint8_t *l=p+off;
                 ES_rate=(
@@ -94,7 +94,7 @@ namespace challenge {
             }
             if (DSM_trick_mode_flag) {
                 if (size_payload<(off+1)) {
-                    return ;
+                    throw PES_format_exception() ;
                 }
                 const uint8_t *l=p+off;
                 trick_mode_control= (l[0] & 0b11100000 ) >> 5;
@@ -115,7 +115,7 @@ namespace challenge {
             }
             if (additional_copy_info_flag) {
                 if (size_payload<(off+1)) {
-                    return ;
+                    throw PES_format_exception() ;
                 }
 
                 const uint8_t *l=p+off;
@@ -126,7 +126,7 @@ namespace challenge {
 
             if (PES_CRC_flag) {
                 if (size_payload<(off+2)) {
-                    return ;
+                    throw PES_format_exception() ;
                 }
 
                 const uint8_t *l=p+off;
@@ -135,7 +135,7 @@ namespace challenge {
             }
             if (PES_extension_flag) {
                 if (size_payload<(off+1)) {
-                    return ;
+                    throw PES_format_exception() ;
                 }
 
                 const uint8_t *l=p+off;
@@ -148,7 +148,7 @@ namespace challenge {
 
                 if (PES_private_data_flag) {
                     if (size_payload<(off+16)) {
-                        return ;
+                        throw PES_format_exception() ;
                     }
                     const uint8_t *l=p+off;
                     memcpy(PES_private_data,l,16);
@@ -163,7 +163,7 @@ namespace challenge {
                 }
                 if (program_packet_sequence_counter_flag){
                     if (size_payload<(off+2)) {
-                        return ;
+                        throw PES_format_exception() ;
                     }
                     const uint8_t *l=p+off;
                     program_packet_sequence_counter =  l[0]&0b01111111 ;
@@ -173,7 +173,7 @@ namespace challenge {
                 }
                 if (PSTD_buffer_flag) {
                     if (size_payload<(off+3)) {
-                        return ;
+                        throw PES_format_exception() ;
                     }
 
                     const uint8_t *l=p+off;
@@ -183,14 +183,14 @@ namespace challenge {
                 }
                 if (PES_extension_flag_2) {
                     if (size_payload<(off+1)) {
-                        return ;
+                        throw PES_format_exception() ;
                     }
 
                     const uint8_t *l=p+off;
                     PES_extension_field_length=l[0]&0b01111111;
                     off+=1+PES_extension_field_length;
                     if (size_payload<(off)) {
-                        return ;
+                        throw PES_format_exception() ;
                     }
                 }
             }
@@ -200,7 +200,7 @@ namespace challenge {
             if (stuffing_len>0){
                 off+=stuffing_len ;
                 if (size_payload<(off)) {
-                    return ;
+                    throw PES_format_exception() ;
                 }
             }
             PES_payload=p+off;
@@ -214,7 +214,7 @@ namespace challenge {
             //
             PES_payload=p+off;
             if (size_payload<(off)) {
-                return ;
+                throw PES_format_exception() ;
             }
 
         } else if ( stream_id == padding_stream) {
@@ -224,7 +224,6 @@ namespace challenge {
         }
 
         PES_not_payload_length=p+off-payload;
-        correct_filled=true;
         return ;
     }
 

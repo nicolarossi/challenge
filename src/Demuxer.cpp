@@ -32,18 +32,15 @@ namespace challenge {
          }
     }
 
-    std::ifstream& operator>>(std::ifstream &input,Demuxer &o) {
-        auto packet_read=-1L;
+    void Demuxer::extract_stream(std::ifstream &input) {
+        packet_read=-1L;
         TS_Packet p;
-        std::map<int,int> freq_of;
-        std::map<int,vector<uint8_t>> stream_of;
 
         while (p.construct_packet(input)){
             packet_read++;
 
             if (!p.is_valid()) {
-                std::cout<< " The packet at position 0x"<< std::hex << (packet_read*SIZE_PACKET)<< std::dec <<" doesn't begin with 0x47"<<std::endl;
-                throw TS_format_exception();
+                throw TS_format_sync_byte_exception(packet_read*SIZE_PACKET);
             }
 
             if (debug) {
@@ -53,15 +50,10 @@ namespace challenge {
                 std::cerr<<p;
             }
 
-            //
             int afc=p.get_adaptation_field_control();
 
             if (afc!=1 && afc!=3) {
-                std::cout<< " The packet at position 0x"
-                        << std::hex << (packet_read*SIZE_PACKET)
-                        << std::dec << " "<< (packet_read*SIZE_PACKET)<<" doesn't have an AFC value recognized"
-                        <<" but "<<afc<<std::endl;
-                throw TS_format_exception();
+                throw TS_format_AFC_value_exception(packet_read);
             }
 
 
@@ -75,34 +67,38 @@ namespace challenge {
 
             update_frequency(freq_of,pid);
 
+
             // Save the payload in the vector associated to the Program Id
             // the vector is reserved to the input stream size possible
             // to increase the output performance
-            auto it_stream=stream_of.find(pid);
+            auto &stream_to_write=stream_of[pid];
 
-            if (it_stream==stream_of.end()){
-                stream_of[pid]=vector<uint8_t>();
-                stream_of[pid].reserve(o.size_stream);
-                it_stream=stream_of.find(pid);
+            // When the vector<> is allocated we reserve the space for the maximum number of byte
+            // to write for that stream.
+            // So the insert() will not copy element to increase the size.
+            // Cons: We consume more memory
+            if (stream_to_write.capacity()<this->size_stream){
+                stream_to_write.reserve(this->size_stream);
             }
-            vector<uint8_t> &stream_to_write=it_stream->second;
 
             uint8_t *payload=p.get_payload();
             int payload_size=p.get_payload_size();
 
+            // We make a memory-to-memory copy to make a single  write on file system, no more using append.
             stream_to_write.insert(stream_to_write.end(),payload,payload+payload_size);
 
         }
-
-        //
-        std::cout<< " Writing file "<<endl;
+        return ;
+    }
+    void Demuxer::dump_extracted_stream() {
+        std::cout<< " Writing file "<<std::endl;
 
         for (auto it=stream_of.begin();it!=stream_of.end();++it){
 
             auto pid=it->first;
             auto v=it->second;
 
-            // Output the payload on "out/file_PID"
+            // Dump the payload on "out/file_PID"
             std::stringstream ss;
             ss << "out/stream_" << pid;
 
@@ -117,6 +113,7 @@ namespace challenge {
 
         std::cout << " PID \t Packets written "<< std::endl;
         std::cout << "----------------"<< std::endl;
+
         for (auto it=freq_of.begin();it!=freq_of.end();++it ){
             std::cout <<" " << it->first << "\t"<<it->second << std::endl;
         }
@@ -124,7 +121,7 @@ namespace challenge {
 
         std::cout << " Packets read \t\t"<<packet_read << std::endl;
         std::cout << " "<<std::endl;
-        return input;
+        return ;
     }
 
 } 
