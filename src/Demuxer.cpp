@@ -71,7 +71,7 @@ namespace challenge {
 
             update_frequency(freq_of, pid);
 
-            // Save the payload in the fstream associated to the Program Id
+            // We select the fstream associated to the Program Id
             auto &stream_to_write = (stream_of[pid]);
 
             // if the fstream is not created we will create it in the "out/" directory
@@ -91,6 +91,7 @@ namespace challenge {
             uint8_t *payload = p.get_payload();
             int payload_size = p.get_payload_size();
 
+            // Save the payload in the fstream
             stream_to_write.write(reinterpret_cast<char*>(payload),
                     payload_size);
 
