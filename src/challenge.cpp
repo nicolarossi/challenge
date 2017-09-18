@@ -1,7 +1,7 @@
 //============================================================================
 // Name        : challenge.cpp
 // Author      : Nicola Rossi
-// Description : Unified Streaming challenge. Extract audio/video from a TS stream
+// Description : Something to extract audio/video from a MPEG-TS stream
 //============================================================================
 
 #include <iostream>
